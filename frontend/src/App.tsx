@@ -1,24 +1,36 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import NavBar from './components/NavBar';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import Login from './pages/Login';
+import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
-import Transactions from './pages/Transactions';
-import Goals from './pages/Goals';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
+import './App.css';
 
-const App: React.FC = () => {
+function App() {
   return (
-    <BrowserRouter>
-      <div id="app">
-        <NavBar />
+    <AuthProvider>
+      <BrowserRouter>
+        <nav style={{ padding: '1rem', background: '#222', color: '#fff' }}>
+          <Link to="/" style={{ marginRight: '1rem', color: '#fff' }}>Dashboard</Link>
+          <Link to="/login" style={{ marginRight: '1rem', color: '#fff' }}>Login</Link>
+          <Link to="/register" style={{ color: '#fff' }}>Register</Link>
+        </nav>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/transactions" element={<Transactions />} />
-          <Route path="/goals" element={<Goals />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
-      </div>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AuthProvider>
   );
-};
+}
 
 export default App;

@@ -1,23 +1,29 @@
-import React from 'react';
-import heroImg from '../assets/hero.png';
-import typescriptLogo from '../assets/typescript.svg';
-import viteLogo from '../assets/vite.svg';
+import React, { useEffect, useState } from 'react';
+import { useAuthContext } from '../context/AuthContext';
 
 const Dashboard: React.FC = () => {
+  const { token, logout } = useAuthContext();
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    // Example call to a protected endpoint (replace with real API when ready)
+    if (token) {
+      fetch('/dashboard', {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((res) => (res.ok ? res.json() : Promise.reject('Failed')))
+        .then((data) => setMessage(data.message || 'Dashboard loaded'))
+        .catch(() => setMessage('Could not load dashboard data'));
+    }
+  }, [token]);
+
   return (
-    <section id="center">
-      <div className="hero">
-        <img src={heroImg} className="base" width={170} height={179} alt="Hero" />
-        <img src={typescriptLogo} className="framework" alt="TypeScript logo" />
-        <img src={viteLogo} className="vite" alt="Vite logo" />
-      </div>
-      <div>
-        <h1>Dashboard</h1>
-        <p>Welcome to your portfolio manager dashboard.</p>
-      </div>
-      {/* Placeholder for Chart.js canvas */}
-      <canvas id="dashboardChart" style={{ width: '100%', height: '300px' }} />
-    </section>
+    <div style={{ padding: '2rem' }}>
+      <h2>Tableau de bord</h2>
+      <p>{message}</p>
+      <button onClick={logout}>Se déconnecter</button>
+    </div>
   );
 };
 

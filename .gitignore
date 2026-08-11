@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+*.pyc
+*.pyd
+
+# Poetry
+poetry.lock
+.poetry/
+dist/
+build/
+
+# VSCode
+.vscode/
+
+# OS artefacts
+.DS_Store
+Thumbs.db
+
+# SQLite DB files
+*.db

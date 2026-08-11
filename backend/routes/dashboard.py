@@ -8,6 +8,13 @@ from ..auth import get_current_user
 
 router = APIRouter()
 
+@router.get("/", response_model=dict)
+async def get_dashboard_root(current_user = Depends(get_current_user)):
+    """Simple dashboard health endpoint."""
+    # Return a friendly message; include user id if available
+    user_id = getattr(current_user, "id", None)
+    return {"message": "Bienvenue sur votre tableau de bord", "user": {"id": user_id}}
+
 @router.get('/summary', response_model=DashboardSummary)
 async def get_dashboard_summary(current_user = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
     # Total income

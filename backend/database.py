@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 
 # Default to SQLite for local development
-DEFAULT_SQLITE_URL = "sqlite+aiosqlite:///./db/dev.db"
+DEFAULT_SQLITE_URL = "sqlite+aiosqlite:///C:/Users/fayca/OneDrive/Bureau/portfolio_manager/app.db"
 
 # In production we expect a PostgreSQL URL, e.g.
 # postgresql+asyncpg://user:password@db:5432/portfolio

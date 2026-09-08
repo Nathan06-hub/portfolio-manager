@@ -43,12 +43,54 @@ async def create_goal(payload: GoalCreate, current_user = Depends(get_current_us
     await db.refresh(db_goal)
     return db_goal
 
+from sqlalchemy import func
+from ..models import Transaction
+
 @router.put('/{goal_id}', response_model=GoalOut)
 async def update_goal(goal_id: int, payload: GoalUpdate, current_user = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
     goal = await get_user_goal(goal_id, current_user.id, db)
     update_data = payload.dict(exclude_unset=True)
+
+    # Si l'utilisateur augmente son montant épargné sur cet objectif
+    if 'current_amount' in update_data and update_data['current_amount'] is not None:
+        new_amount = update_data['current_amount']
+        diff = new_amount - (goal.current_amount or 0.0)
+
+        # Si c'est un versement (diff > 0), vérifier que le solde est suffisant
+        if diff > 0:
+            # Calcul du solde actuel de l'utilisateur
+            income_stmt = select(func.sum(Transaction.amount)).where(
+                Transaction.owner_id == current_user.id,
+                Transaction.type == 'income'
+            )
+            expense_stmt = select(func.sum(Transaction.amount)).where(
+                Transaction.owner_id == current_user.id,
+                Transaction.type == 'expense'
+            )
+            income_res = await db.execute(income_stmt)
+            expense_res = await db.execute(expense_stmt)
+            total_income = income_res.scalar() or 0.0
+            total_expense = expense_res.scalar() or 0.0
+            current_balance = total_income - total_expense
+
+            if diff > current_balance:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=f"Solde insuffisant pour épargner {diff:,.2f} €. Votre solde actuel est de {current_balance:,.2f} €."
+                )
+
+            # Enregistrer automatiquement la transaction d'épargne (sortie de trésorerie vers l'objectif)
+            savings_tx = Transaction(
+                amount=diff,
+                description=f"Épargne vers objectif : {goal.name}",
+                type='expense',
+                owner_id=current_user.id,
+            )
+            db.add(savings_tx)
+
     for key, value in update_data.items():
         setattr(goal, key, value)
+
     await db.commit()
     await db.refresh(goal)
     return goal

@@ -31,10 +31,14 @@ async def get_transaction(transaction_id: int, current_user = Depends(get_curren
 
 @router.post('/', response_model=TransactionOut, status_code=status.HTTP_201_CREATED)
 async def create_transaction(payload: TransactionCreate, current_user = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+    if isinstance(payload.type, str):
+        tx_type = payload.type.lower()
+    else:
+        tx_type = 'income' if payload.type == 0 else 'expense'
     db_transaction = Transaction(
         amount=payload.amount,
         description=payload.description,
-        type='income' if payload.type == 0 else 'expense',
+        type=tx_type,
         owner_id=current_user.id,
     )
     db.add(db_transaction)

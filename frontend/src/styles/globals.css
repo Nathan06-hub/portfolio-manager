@@ -1,0 +1,94 @@
+/* globals.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --bg-light: #f8fafc;
+  --bg-dark: #0f172a;
+  --card-bg-light: #ffffff;
+  --card-bg-dark: #1e293b;
+  --card-border-light: #e2e8f0;
+  --card-border-dark: #334155;
+  --text-light: #0f172a;
+  --text-muted-light: #64748b;
+  --text-dark: #f8fafc;
+  --text-muted-dark: #94a3b8;
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: var(--bg-dark);
+    --card-bg: var(--card-bg-dark);
+    --card-border: var(--card-border-dark);
+    --text: var(--text-dark);
+    --text-muted: var(--text-muted-dark);
+  }
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: var(--bg-light);
+    --card-bg: var(--card-bg-light);
+    --card-border: var(--card-border-light);
+    --text: var(--text-light);
+    --text-muted: var(--text-muted-light);
+  }
+}
+
+.light {
+  color-scheme: light;
+  --bg: var(--bg-light);
+  --card-bg: var(--card-bg-light);
+  --card-border: var(--card-border-light);
+  --text: var(--text-light);
+  --text-muted: var(--text-muted-light);
+}
+
+.dark {
+  color-scheme: dark;
+  --bg: var(--bg-dark);
+  --card-bg: var(--card-bg-dark);
+  --card-border: var(--card-border-dark);
+  --text: var(--text-dark);
+  --text-muted: var(--text-muted-dark);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  background-color: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family);
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}

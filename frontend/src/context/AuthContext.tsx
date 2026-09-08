@@ -1,6 +1,9 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
+// Re-export useAuth so pages can import it from this file
+export { useAuth } from '../hooks/useAuth';
+
 interface AuthContextProps {
   token: string | null;
   login: (token: string) => void;

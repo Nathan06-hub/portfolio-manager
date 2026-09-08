@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Tests and build info
+test-results/
+playwright-report/
+*.tsbuildinfo

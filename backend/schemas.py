@@ -13,23 +13,25 @@ class UserOut(BaseModel):
     class Config:
         orm_mode = True
 
+from typing import Optional, List, Union
+
 class TransactionCreate(BaseModel):
     amount: PositiveFloat
     description: Optional[str] = None
-    type: conint(strict=True, ge=0, le=1)  # 0 = income, 1 = expense
+    type: Union[str, conint(strict=True, ge=0, le=1)]  # 'income'/'expense' or 0/1
     category_id: Optional[int] = None
 
 class TransactionUpdate(BaseModel):
     amount: Optional[PositiveFloat] = None
     description: Optional[str] = None
-    type: Optional[conint(strict=True, ge=0, le=1)] = None
+    type: Optional[Union[str, conint(strict=True, ge=0, le=1)]] = None
     category_id: Optional[int] = None
 
 class TransactionOut(BaseModel):
     id: int
     amount: float
-    description: Optional[str]
-    type: int
+    description: Optional[str] = None
+    type: str
     timestamp: datetime
     class Config:
         orm_mode = True

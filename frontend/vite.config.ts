@@ -7,7 +7,27 @@ export default defineConfig({
   server: {
     proxy: {
       '/auth': {
-        target: 'http://127.0.0.1:8000',
+        target: 'http://127.0.0.1:8002',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/dashboard': {
+        target: 'http://127.0.0.1:8002',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/transactions': {
+        target: 'http://127.0.0.1:8002',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/goals': {
+        target: 'http://127.0.0.1:8002',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/categories': {
+        target: 'http://127.0.0.1:8002',
         changeOrigin: true,
         secure: false,
       },

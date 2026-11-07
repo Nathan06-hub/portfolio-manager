@@ -1,10 +1,11 @@
 import pytest
-from httpx import AsyncClient
+from httpx import AsyncClient, ASGITransport
 from backend.main import app
 
 @pytest.mark.asyncio
 async def test_dashboard_root_authenticated():
-    async with AsyncClient(app=app, base_url="http://testserver") as ac:
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://testserver") as ac:
         # Provide any non‑empty token, e.g., "dummy-token"
         response = await ac.get(
             "/dashboard/",

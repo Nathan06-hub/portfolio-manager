@@ -2,7 +2,7 @@
 name = "portfolio_manager"
 version = "0.1.0"
 description = "Backend for Portfolio Manager"
-authors = ["fayca <fayca@example.com>"]
+authors = ["Stéphane Nathanaël MARE <marenathanael06@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 packages = [{include = "backend"}]
